@@ -16,7 +16,8 @@ Stage changes with an explicit `git add <files>` then commit with the Co-Authore
 2. Build the explicit file list from `git status` (modified, added, untracked you want to include). Skip gitignored files (check with `git check-ignore <file>`). Never use `git add .` or `git add -A`.
 3. If `CHANGELOG.md` exists at the repo root, update it before staging:
    - Match its existing format (e.g. Keep a Changelog: `## [Unreleased]` with `Added` / `Changed` / `Fixed` / `Removed` sections).
-   - Add one bullet per logical change under the right section in the `[Unreleased]` (or current in-progress) section. Create the section if missing.
+   - If a `## [Unreleased]` section is missing (e.g. the previous release just promoted it away), create one at the top above the most recent release section.
+   - Add one bullet per logical change under the right sub-section (`Added` / `Changed` / `Fixed` / `Removed`) in `[Unreleased]`. Create the sub-section if missing.
    - Do not invent a new release/version unless the user asks.
    - Include `CHANGELOG.md` in the explicit `git add` list.
 4. Stage with `git add <file1> <file2> ...`.

@@ -21,7 +21,7 @@ The user supplies the version as `x.y.z` (optionally `vx.y.z`). If missing or ma
 3. If the tag already exists, stop and report it.
 4. If `CHANGELOG.md` exists at repo root:
    - Get today's date with `date +%Y-%m-%d`.
-   - Replace the `## [Unreleased]` heading (or insert a new section if absent) with `## [vX.Y.Z] - YYYY-MM-DD`, keeping a fresh empty `## [Unreleased]` section above it for future entries.
+   - Replace the `## [Unreleased]` heading with `## [vX.Y.Z] - YYYY-MM-DD`. Do NOT add a fresh empty `## [Unreleased]` section above it — leave the file without an `[Unreleased]` heading until new entries are actually added.
    - Match the existing changelog format (Keep a Changelog conventions if used: `Added` / `Changed` / `Fixed` / `Removed`).
    - If the file uses link references at the bottom (e.g. `[Unreleased]: ...compare/vX.Y.Z...HEAD`), update those references too.
    - Invoke the `/commit` skill to stage `CHANGELOG.md` and commit with a message like `chore: release vX.Y.Z`.
