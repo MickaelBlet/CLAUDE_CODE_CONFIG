@@ -5,7 +5,7 @@
       {
         "hooks": [
           {
-            "command": "tput bel &",
+            "command": "printf '\\a' > /dev/tty",
             "type": "command"
           }
         ],
@@ -16,7 +16,7 @@
       {
         "hooks": [
           {
-            "command": "tput bel &",
+            "command": "printf '\\a' > /dev/tty",
             "type": "command"
           }
         ],
@@ -27,7 +27,7 @@
       {
         "hooks": [
           {
-            "command": "tput bel &",
+            "command": "printf '\\a' > /dev/tty",
             "type": "command"
           }
         ],
