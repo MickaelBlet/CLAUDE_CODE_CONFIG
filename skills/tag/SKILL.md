@@ -9,11 +9,17 @@ Create a semver git tag and, if `CHANGELOG.md` exists, promote `[Unreleased]` to
 
 ## Arguments
 
-The user supplies the version as `x.y.z` (optionally `vx.y.z`). If missing or malformed, ask once.
+The user supplies either:
+- An explicit version `x.y.z` (optionally `vx.y.z`), or
+- A bump level: `patch` (default if no argument), `minor`, or `major`.
+
+If the argument is missing, default to `patch`. If malformed (neither a semver nor a known bump level), ask once.
 
 ## Steps
 
-1. Validate the version matches `^v?\d+\.\d+\.\d+$`. Always normalize to `vX.Y.Z` — used for both the tag name and inside CHANGELOG.md.
+1. Resolve the target version:
+   - If the argument matches `^v?\d+\.\d+\.\d+$`, normalize to `vX.Y.Z`.
+   - Otherwise, treat it as a bump level (`patch` | `minor` | `major`; default `patch`). Detect the latest semver tag with `git tag -l 'v*.*.*' --sort=-v:refname | head -n1` (fallback to `v0.0.0` if none). Increment the appropriate component, resetting lower components to `0`, and normalize to `vX.Y.Z`.
 2. Run in parallel:
    - `git status`
    - `git tag -l` to confirm the tag does not already exist
@@ -24,7 +30,7 @@ The user supplies the version as `x.y.z` (optionally `vx.y.z`). If missing or ma
    - Replace the `## [Unreleased]` heading with `## [vX.Y.Z] - YYYY-MM-DD`. Do NOT add a fresh empty `## [Unreleased]` section above it — leave the file without an `[Unreleased]` heading until new entries are actually added.
    - Match the existing changelog format (Keep a Changelog conventions if used: `Added` / `Changed` / `Fixed` / `Removed`).
    - If the file uses link references at the bottom (e.g. `[Unreleased]: ...compare/vX.Y.Z...HEAD`), update those references too.
-   - Invoke the `/commit` skill to stage `CHANGELOG.md` and commit with a message like `chore: release vX.Y.Z`.
+   - Invoke the `/commit` skill to stage `CHANGELOG.md` and commit with a message like `release vX.Y.Z` (no Conventional Commits prefix such as `chore:` / `feat:` / `fix:`).
 5. Create the annotated tag on HEAD:
    ```
    git tag -a vX.Y.Z -m "Release vX.Y.Z"
@@ -38,4 +44,5 @@ The user supplies the version as `x.y.z` (optionally `vx.y.z`). If missing or ma
 - Only update CHANGELOG.md if it exists at the repo root; do not create one.
 - Only invoke `/commit` when CHANGELOG.md was actually modified.
 - Tag must be annotated (`-a`), not lightweight.
+- Commit subject for the changelog release must be a plain imperative sentence — no Conventional Commits prefixes (`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, etc.).
 - If the working tree has unrelated uncommitted changes, ask before proceeding.
