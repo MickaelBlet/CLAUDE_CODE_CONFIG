@@ -1,0 +1,73 @@
+{
+  "effortLevel": "low",
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "command": "tput bel &",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "command": "tput bel &",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "$HOME/.claude/hooks/rtk-rewrite.sh",
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash"
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "powershell.exe -c \"(New-Object Media.SoundPlayer 'C:\\Windows\\Media\\Speech On.wav').PlaySync()\" &",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ]
+  },
+  "model": "opus",
+  "permissions": {
+    "allow": [
+      "Bash(rtk *)",
+      "Bash(cat *)",
+      "Bash(grep *)",
+      "Bash(/bin/grep *)",
+      "Bash(cmake *)",
+      "Bash(ctest *)",
+      "Bash(code *)",
+      "Bash(xterm -T commit *)"
+    ]
+  },
+  "prefersReducedMotion": true,
+  "shell": {
+    "disable_aliases": true
+  },
+  "spinnerTipsEnabled": false,
+  "statusLine": {
+    "command": "$HOME/.claude/statusline-command.sh",
+    "refreshInterval": 1,
+    "type": "command"
+  },
+  "syntaxHighlightingDisabled": true
+}
