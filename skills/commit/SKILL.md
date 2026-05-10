@@ -1,11 +1,11 @@
 ---
 name: commit
-description: Suggest a short, concise git commit message for the current changes. Use when the user types /commit. Does NOT run git commit.
+description: Stage explicit files with git add and create a git commit including the Co-Authored-By Claude trailer. Use when the user types /commit.
 ---
 
 # /commit
 
-Propose a short git commit message. **Do not run `git commit`.** Only output the message text for the user to copy.
+Stage changes with an explicit `git add <files>` then commit with the Co-Authored-By Claude trailer.
 
 ## Steps
 
@@ -13,31 +13,34 @@ Propose a short git commit message. **Do not run `git commit`.** Only output the
    - `git status` (no `-uall`)
    - `git diff` (staged + unstaged)
    - `git log -n 5 --oneline` to match repo style
-2. Draft a **short** commit message:
-   - Single line, imperative mood ("fix X", "add Y", "refactor Z")
-   - Under 70 characters
-   - No body, no footer
-   - Match the repo's existing style (use `feat:` / `fix:` prefix only if the repo already does)
-3. Stage the impacted files directly with `git add <file1> <file2> ...` (Bash). Use the explicit list of impacted files (from `git status`, both staged and unstaged) — never `git add .` or `git add -A`. Exclude any gitignored files: check each candidate with `git check-ignore <file>` and skip matches.
-4. Output the message in a code block, then automatically launch the commit via Bash inside xterm. Let **gpg's own `pinentry-curses`** handle the passphrase prompt — do not read the passphrase in bash. The only thing the script must do is export `GPG_TTY` so pinentry can find the terminal, then run `git commit`. This is what was failing before: a manual `read` + wrapper-script chain that swallowed Enter or fed a malformed wrapper to git. Pinentry handles Enter natively.
+2. Build the explicit file list from `git status` (modified, added, untracked you want to include). Skip gitignored files (check with `git check-ignore <file>`). Never use `git add .` or `git add -A`.
+3. If `CHANGELOG.md` exists at the repo root, update it before staging:
+   - Match its existing format (e.g. Keep a Changelog: `## [Unreleased]` with `Added` / `Changed` / `Fixed` / `Removed` sections).
+   - Add one bullet per logical change under the right section in the `[Unreleased]` (or current in-progress) section. Create the section if missing.
+   - Do not invent a new release/version unless the user asks.
+   - Include `CHANGELOG.md` in the explicit `git add` list.
+4. Stage with `git add <file1> <file2> ...`.
+5. Draft the commit message:
+   - **Subject**: single line, imperative mood ("fix X", "add Y", "refactor Z"), under 70 chars
+   - Do not use Conventional Commits prefixes (`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, etc.) — write the subject as a plain imperative sentence
+   - **Body**: blank line after subject, then bullet points explicitly listing the changes (one bullet per logical change, referencing files/symbols affected). Wrap at ~72 chars.
+6. Output the full message in a code block, then commit via Bash using a HEREDOC:
    ```
-   xterm -T commit -bg black -fg white -geometry 120x30 -e bash -c '
-     export GPG_TTY=$(tty);
-     gpgconf --kill gpg-agent 2>/dev/null;
-     git commit -S -m "<message>
+   git commit -S -m "$(cat <<'EOF'
+   <subject>
 
-   Co-Authored-By: Claude <noreply@anthropic.com>";
-     STATUS=$?;
-     [ $STATUS -ne 0 ] && echo "commit failed (status $STATUS)" && read -n 1 -s -r -p "Press any key to close..."'
+   - <explicit change 1>
+   - <explicit change 2>
+
+   Co-Authored-By: Claude <noreply@anthropic.com>
+   EOF
+   )"
    ```
-   - `export GPG_TTY=$(tty)` — pinentry-curses needs the TTY of the xterm to draw the prompt. Without it the prompt is sent to a dead fd and never appears.
-   - `gpgconf --kill gpg-agent` then `gpg-connect-agent UPDATESTARTUPTTY /bye` — kills the stale agent and rebinds the freshly-respawned one to the xterm's TTY so the next `git commit` triggers pinentry-curses on this terminal.
-   - The trailing `read -n 1` keeps the window open so you can see success or error output.
-   No other explanation.
 
 ## Rules
 
-- Do not run `git commit` directly — only via `xterm -bg black -fg white -geometry 80x10 -e bash -c '...'`.
-- `git add` is run directly (no wrapper script).
-- One line. No fluff.
-- If there are no changes, say so instead of inventing a message.
+- Always include the `Co-Authored-By: Claude <noreply@anthropic.com>` trailer.
+- Always `git add` with an explicit file list — never `.` or `-A`.
+- Body must explicitly enumerate the changes as bullets — no vague summaries.
+- If there are no changes, say so instead of inventing a commit.
+- If the commit fails (e.g. hook failure), report the error and do not retry blindly.

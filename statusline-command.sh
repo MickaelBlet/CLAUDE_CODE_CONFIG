@@ -220,11 +220,9 @@ function session_usage() {
         # Force refresh by toggling refreshInterval in settings.json if no rate limit info is available
         tmp=$(mktemp)
         jq '.statusLine.refreshInterval = 1' "$HOME/.claude/settings.json" > "$tmp" && mv "$tmp" "$HOME/.claude/settings.json"
-        rm -rf "$tmp"
         sleep 1.1
         tmp=$(mktemp)
         jq '.statusLine.refreshInterval = 30' "$HOME/.claude/settings.json" > "$tmp" && mv "$tmp" "$HOME/.claude/settings.json"
-        rm -rf "$tmp"
         return
     fi
 
