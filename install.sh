@@ -26,12 +26,13 @@ check_deps() {
 
 install_claude_code() {
     info "Installing Claude Code..."
-    curl -fsSL https://claude.ai/install.sh | sh
+    curl -fsSL https://claude.ai/install.sh | bash
 }
 
 install_rtk() {
     info "Installing RTK (Rust Token Killer)..."
     curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+    rtk init -g
 }
 
 install_config() {

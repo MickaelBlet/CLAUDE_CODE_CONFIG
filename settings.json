@@ -23,26 +23,26 @@
         "matcher": ""
       }
     ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.claude/hooks/rtk-rewrite.sh",
-            "type": "command"
-          }
-        ],
-        "matcher": "Bash"
-      }
-    ],
     "Stop": [
       {
         "hooks": [
           {
-            "command": "powershell.exe -c \"(New-Object Media.SoundPlayer 'C:\\Windows\\Media\\Speech On.wav').PlaySync()\" &",
+            "command": "tput bel &",
             "type": "command"
           }
         ],
         "matcher": ""
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
       }
     ]
   },
@@ -55,8 +55,7 @@
       "Bash(/bin/grep *)",
       "Bash(cmake *)",
       "Bash(ctest *)",
-      "Bash(code *)",
-      "Bash(xterm -T commit *)"
+      "Bash(code *)"
     ]
   },
   "prefersReducedMotion": true,

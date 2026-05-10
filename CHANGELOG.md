@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `.gitignore`: ignore local Claude state, caches, sessions, plugins, and `hooks/rtk-rewrite.sh` / `hooks/.rtk-hook.sha256`.
+- `install.sh`: run `rtk init -g` after installing RTK to provision the global hook.
+
+### Changed
+- `install.sh`: pipe the Claude installer to `bash` instead of `sh`.
+- `settings.json`: replace the local `rtk-rewrite.sh` PreToolUse hook with `rtk hook claude`; switch the Stop hook to `tput bel &`.
+
+### Removed
+- `hooks/rtk-rewrite.sh`: delete the in-repo hook (now provided by `rtk hook claude`).
+- `config/notification_states.json`: drop tracked notification state file (now gitignored).
+- `settings.json`: remove the `Bash(xterm -T commit *)` permission entry.
+
 ## [v0.1.1] - 2026-05-10
 
 ### Changed
