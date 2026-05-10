@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v0.1.3] - 2026-05-10
 
 ### Fixed
 - `README.md.d/generate_images/my-config.html`: extend gray border styling to include `yolo` text after the `/` slash indicator.
