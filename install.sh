@@ -32,7 +32,7 @@ install_claude_code() {
 install_rtk() {
     info "Installing RTK (Rust Token Killer)..."
     curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
-    rtk init -g
+    echo -e "N\ny\n" | PATH="$HOME/.local/bin:$PATH" rtk init -g
 }
 
 install_config() {
