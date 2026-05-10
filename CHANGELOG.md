@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v0.1.1] - 2026-05-10
 
 ### Changed
 - `skills/tag/SKILL.md`: stop inserting an empty `## [Unreleased]` section after promoting it to a release; leave the file without an `[Unreleased]` heading until new entries land.
