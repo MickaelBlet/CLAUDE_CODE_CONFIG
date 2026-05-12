@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `THIRD.md`: document third-party runtime and installer dependencies.
+
+### Changed
+- Move `README.md.d/generate_images/` assets under `README.md.d/images/generate_images/` (fonts, `html_to_png.py`, `my-config.html`).
+- `README.md.d/images/generate_images/html_to_png.py`: write PNGs to parent `images/` directory via `output_path`.
+- `settings.json`: add `"awaySummaryEnabled": false`.
+
 ## [v0.1.6] - 2026-05-10
 
 ### Fixed

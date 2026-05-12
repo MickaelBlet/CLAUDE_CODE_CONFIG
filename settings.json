@@ -63,6 +63,7 @@
     "disable_aliases": true
   },
   "spinnerTipsEnabled": false,
+  "awaySummaryEnabled": false,
   "statusLine": {
     "command": "$HOME/.claude/statusline-command.sh",
     "refreshInterval": 30,
