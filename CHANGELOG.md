@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `README.md`: full configuration reference covering `settings.json` (permissions, hooks, statusline, behavior flags) and per-skill usage for `/code`, `/commit`, `/tag`, `/review`, and `/security-review`.
+
+### Changed
+- `README.md.d/images/generate_images/html_to_png.py`: render at `SCALE = 3` with `--force-device-scale-factor=3` and `--hide-scrollbars`; save the cropped output with `optimize=True`.
+- `README.md.d/images/generate_images/my-config.html`: drop preview font-size from 19px to 17px, widen the welcome frame, and add a `📊 10%` context segment with `│`-separated session/week timestamps.
+- `README.md.d/images/my-config.png`: regenerate the preview at the new resolution and HTML layout.
+- `settings.json`: reorder keys so `permissions` comes first and behavior flags are grouped together.
+- `statusline-command.sh`: in `session_usage`, append an absolute `│<HHhMM>` / `│<weekday HHhMM>` suffix to the session-window timestamp on all three branches; fix the hour-branch minutes calculation by capturing `timestamp_m` before dividing.
+
+### Fixed
+- `settings.json`: guard `Notification`, `PermissionRequest`, and `Stop` bell hooks with `[ -w /dev/tty ] && printf '\a' > /dev/tty || true` so they no-op when `/dev/tty` is not writable.
+- `skills/tag/SKILL.md`: drop the `v` prefix from the release heading example (`## [X.Y.Z] - YYYY-MM-DD` instead of `## [vX.Y.Z] - YYYY-MM-DD`).
+
 ## [v0.1.7] - 2026-05-12
 
 ### Added

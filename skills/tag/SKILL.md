@@ -27,7 +27,7 @@ If the argument is missing, default to `patch`. If malformed (neither a semver n
 3. If the tag already exists, stop and report it.
 4. If `CHANGELOG.md` exists at repo root:
    - Get today's date with `date +%Y-%m-%d`.
-   - Replace the `## [Unreleased]` heading with `## [vX.Y.Z] - YYYY-MM-DD`. Do NOT add a fresh empty `## [Unreleased]` section above it — leave the file without an `[Unreleased]` heading until new entries are actually added.
+   - Replace the `## [Unreleased]` heading with `## [X.Y.Z] - YYYY-MM-DD`. Do NOT add a fresh empty `## [Unreleased]` section above it — leave the file without an `[Unreleased]` heading until new entries are actually added.
    - Match the existing changelog format (Keep a Changelog conventions if used: `Added` / `Changed` / `Fixed` / `Removed`).
    - If the file uses link references at the bottom (e.g. `[Unreleased]: ...compare/vX.Y.Z...HEAD`), update those references too.
    - Invoke the `/commit` skill to stage `CHANGELOG.md` and commit with a message like `release vX.Y.Z` (no Conventional Commits prefix such as `chore:` / `feat:` / `fix:`).

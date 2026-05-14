@@ -268,15 +268,17 @@ function session_usage() {
         timestamp_week=$(echo "${timestamp_week}/60" | bc)
         if [[ "${timestamp_week}" -lt 100 ]]; then
             timestamp_week="${timestamp_week}m"
+            timestamp_week+="\033[38;5;232m"$'\u2502'"\033[38;5;${fg}m$(date -d "@${timestamp_week_full}" +"%Hh%M" 2>/dev/null)"
         else
+            timestamp_m="${timestamp_week}"
             timestamp_week=$(echo "${timestamp_week}/60" | bc)
             if [[ "${timestamp_week}" -lt 24 ]]; then
-                timestamp_m="${timestamp_week}"
-                timestamp_m=$(echo "${timestamp_week}%60" | bc)
-                timestamp_week=$(echo "${timestamp_week}/60" | bc)
+                timestamp_m=$(echo "${timestamp_m}%60" | bc)
                 timestamp_week="${timestamp_week}h$(printf "%02d" "${timestamp_m}")"
+                timestamp_week+="\033[38;5;232m"$'\u2502'"\033[38;5;${fg}m$(date -d "@${timestamp_week_full}" +"%Hh%M" 2>/dev/null)"
             else
-                timestamp_week="$(echo "${timestamp_week}/24" | bc)d\033[38;5;232m"$'\u2502'"\033[38;5;${fg}m$(date -d "@${timestamp_week_full}" +"%A %Hh%M" 2>/dev/null)"
+                timestamp_week="$(echo "${timestamp_week}/24" | bc)d"
+                timestamp_week+="\033[38;5;232m"$'\u2502'"\033[38;5;${fg}m$(date -d "@${timestamp_week_full}" +"%A %Hh%M" 2>/dev/null)"
             fi
         fi
     fi

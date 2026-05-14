@@ -1,37 +1,47 @@
 {
-  "effortLevel": "low",
+  "permissions": {
+    "allow": [
+      "Bash(rtk *)",
+      "Bash(cat *)",
+      "Bash(grep *)",
+      "Bash(/bin/grep *)",
+      "Bash(cmake *)",
+      "Bash(ctest *)",
+      "Bash(code *)"
+    ]
+  },
   "hooks": {
     "Notification": [
       {
+        "matcher": "",
         "hooks": [
           {
-            "command": "printf '\\a' > /dev/tty",
-            "type": "command"
+            "type": "command",
+            "command": "[ -w /dev/tty ] && printf '\\a' > /dev/tty || true"
           }
-        ],
-        "matcher": ""
+        ]
       }
     ],
     "PermissionRequest": [
       {
+        "matcher": "",
         "hooks": [
           {
-            "command": "printf '\\a' > /dev/tty",
-            "type": "command"
+            "type": "command",
+            "command": "[ -w /dev/tty ] && printf '\\a' > /dev/tty || true"
           }
-        ],
-        "matcher": ""
+        ]
       }
     ],
     "Stop": [
       {
+        "matcher": "",
         "hooks": [
           {
-            "command": "printf '\\a' > /dev/tty",
-            "type": "command"
+            "type": "command",
+            "command": "[ -w /dev/tty ] && printf '\\a' > /dev/tty || true"
           }
-        ],
-        "matcher": ""
+        ]
       }
     ],
     "PreToolUse": [
@@ -46,28 +56,18 @@
       }
     ]
   },
-  "model": "opus",
-  "permissions": {
-    "allow": [
-      "Bash(rtk *)",
-      "Bash(cat *)",
-      "Bash(grep *)",
-      "Bash(/bin/grep *)",
-      "Bash(cmake *)",
-      "Bash(ctest *)",
-      "Bash(code *)"
-    ]
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.claude/statusline-command.sh",
+    "refreshInterval": 30
   },
+  "spinnerTipsEnabled": false,
+  "syntaxHighlightingDisabled": true,
+  "effortLevel": "low",
+  "awaySummaryEnabled": false,
   "prefersReducedMotion": true,
   "shell": {
     "disable_aliases": true
   },
-  "spinnerTipsEnabled": false,
-  "awaySummaryEnabled": false,
-  "statusLine": {
-    "command": "$HOME/.claude/statusline-command.sh",
-    "refreshInterval": 30,
-    "type": "command"
-  },
-  "syntaxHighlightingDisabled": true
+  "model": "opus"
 }
