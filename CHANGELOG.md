@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `skills/commit-gpg/SKILL.md`: new `/commit-gpg` skill that mirrors `/commit` but wraps the signed commit in `xterm -e bash -c` with `GPG_TTY=$(tty)` and `gpg.pinentry-mode=loopback` so `pinentry-tty` can prompt for the GPG passphrase.
+
 ## [0.1.8] - 2026-05-14
 
 ### Added
