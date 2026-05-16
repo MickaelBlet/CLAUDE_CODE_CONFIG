@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `skills/commit-gpg/SKILL.md`: new `/commit-gpg` skill that mirrors `/commit` but wraps the signed commit in `xterm -e bash -c` with `GPG_TTY=$(tty)` and `gpg.pinentry-mode=loopback` so `pinentry-tty` can prompt for the GPG passphrase.
 
+### Changed
+- `skills/commit/SKILL.md`, `skills/commit-gpg/SKILL.md`: require explicit verification of `CHANGELOG.md` `[Unreleased]` against the diff before staging, with an explicit bypass clause for purely non-functional changes.
+
 ## [0.1.8] - 2026-05-14
 
 ### Added

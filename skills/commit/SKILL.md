@@ -14,12 +14,15 @@ Stage changes with an explicit `git add <files>` then commit with the Co-Authore
    - `git diff` (staged + unstaged)
    - `git log -n 5 --oneline` to match repo style
 2. Build the explicit file list from `git status` (modified, added, untracked you want to include). Skip gitignored files (check with `git check-ignore <file>`). Never use `git add .` or `git add -A`.
-3. If `CHANGELOG.md` exists at the repo root, update it before staging:
+3. If `CHANGELOG.md` exists at the repo root, you MUST verify whether it needs updating before staging:
+   - Read the current `CHANGELOG.md` and compare its `[Unreleased]` section against the staged + unstaged diff from step 1.
+   - For every logical change in the diff, confirm there is a corresponding bullet in `[Unreleased]`. If any are missing, update the file.
    - Match its existing format (e.g. Keep a Changelog: `## [Unreleased]` with `Added` / `Changed` / `Fixed` / `Removed` sections).
    - If a `## [Unreleased]` section is missing (e.g. the previous release just promoted it away), create one at the top above the most recent release section.
    - Add one bullet per logical change under the right sub-section (`Added` / `Changed` / `Fixed` / `Removed`) in `[Unreleased]`. Create the sub-section if missing.
    - Do not invent a new release/version unless the user asks.
    - Include `CHANGELOG.md` in the explicit `git add` list.
+   - Do not skip this verification — even for small changes. Only bypass if the change is purely non-functional (e.g. typo in a comment) and state so explicitly.
 4. Stage with `git add <file1> <file2> ...`.
 5. Draft the commit message:
    - **Subject**: single line, imperative mood ("fix X", "add Y", "refactor Z"), under 70 chars
