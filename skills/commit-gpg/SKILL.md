@@ -38,7 +38,7 @@ Identical to `/commit`, but wraps the signed commit in an `xterm` so `pinentry-t
 
    Co-Authored-By: Claude <noreply@anthropic.com>
    EOF
-   )\"; echo; echo '[press enter to close]'; read"
+   )\""
    ```
    - `xterm -e` gives `pinentry-tty` a real TTY for the passphrase prompt.
    - `GPG_TTY=$(tty)` inside the xterm ensures gpg targets that terminal.
