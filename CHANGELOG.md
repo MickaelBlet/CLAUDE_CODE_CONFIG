@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CLAUDE.md`: new "Task Delegation" section describing when to spawn subagents, model tiering (Haiku/Sonnet/Opus), tier-escalation rule, and parent ownership of final output.
 - `settings.json`: add `env` block setting `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=60`.
 
+### Changed
+- `CLAUDE.md`: reformat "Task Delegation" — convert don't-spawn clauses to a bulleted list, promote model tiering to a `## Model Selection` subsection with a Markdown table; title-case the "Response Style" heading.
+
 ## [0.1.10] - 2026-05-18
 
 ### Changed
