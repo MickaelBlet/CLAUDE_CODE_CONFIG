@@ -1,6 +1,7 @@
 ---
 name: commit
 description: Stage explicit files with git add and create a git commit including the Co-Authored-By Claude trailer. Use when the user types /commit.
+user-invocable: false
 ---
 
 # /commit

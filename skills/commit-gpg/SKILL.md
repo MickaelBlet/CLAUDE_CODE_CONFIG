@@ -1,6 +1,8 @@
 ---
 name: commit-gpg
 description: Same as the commit skill, but spawns an xterm running pinentry-tty so the GPG signing passphrase can be entered interactively. Use when the user types /commit-gpg.
+disable-model-invocation: true
+allowed-tools: Bash(git add *) Bash(git commit *) Bash(git status *) Bash(git diff *) Bash(git log *) Bash(git check-ignore *) Bash(xterm *)
 ---
 
 # /commit-gpg
