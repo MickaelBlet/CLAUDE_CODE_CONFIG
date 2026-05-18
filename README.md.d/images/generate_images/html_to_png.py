@@ -20,10 +20,9 @@ def process(filename):
         output_path=output_path,
         size=(830 * SCALE, 1000 * SCALE),
         custom_flags=[
+            "--default-background-color=00000000",
             "--hide-scrollbars",
             "--force-device-scale-factor={}".format(SCALE),
-            # "--disable-gpu",
-            # "--no-sandbox",
         ],
     )
     hti.screenshot(url="file://" + filepath, save_as=name)

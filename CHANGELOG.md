@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- `README.md.d/images/generate_images/html_to_png.py`: pass `--default-background-color=00000000` to render with a transparent background; drop the commented-out `--disable-gpu` / `--no-sandbox` flags.
+- `README.md.d/images/generate_images/my-config.html`: remove the `background-color: #000000` on `body` so the preview renders transparent.
+- `README.md.d/images/my-config.png`: regenerate with the transparent background.
+
 ## [0.1.11] - 2026-05-19
 
 ### Added
