@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `skills/commit-gpg/SKILL.md`: add `disable-model-invocation: true` and `allowed-tools` frontmatter restricting auto-invocation and tool scope.
 - `skills/commit/SKILL.md`: add `user-invocable: false` frontmatter to hide it from user-invocable skills.
 - `CLAUDE.md`: reformat "Task Delegation" — convert don't-spawn clauses to a bulleted list, promote model tiering to a `## Model Selection` subsection with a Markdown table; title-case the "Response Style" heading.
+- `skills/tag/SKILL.md`: add `allowed-tools` frontmatter restricting tool scope to the git/ls/date commands the skill actually uses.
 
 ## [0.1.10] - 2026-05-18
 

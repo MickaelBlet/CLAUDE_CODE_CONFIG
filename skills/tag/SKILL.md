@@ -1,6 +1,7 @@
 ---
 name: tag
 description: Create an annotated git tag with a semantic version (x.y.z) and update CHANGELOG.md if it exists. Use when the user types /tag.
+allowed-tools: Bash(git add *) Bash(git commit *) Bash(git tag *) Bash(git status) Bash(git tag -l) Bash(ls CHANGELOG.md) Bash(date)
 ---
 
 # /tag
