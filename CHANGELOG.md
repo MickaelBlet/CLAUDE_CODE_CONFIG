@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `CLAUDE.md`: new "Task Delegation" section describing when to spawn subagents, model tiering (Haiku/Sonnet/Opus), tier-escalation rule, and parent ownership of final output.
+- `settings.json`: add `env` block setting `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=60`.
+
 ## [0.1.10] - 2026-05-18
 
 ### Changed

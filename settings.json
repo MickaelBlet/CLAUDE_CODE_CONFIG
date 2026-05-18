@@ -69,5 +69,8 @@
   "shell": {
     "disable_aliases": true
   },
-  "model": "opus"
+  "model": "opus",
+  "env": {
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "60"
+  }
 }
