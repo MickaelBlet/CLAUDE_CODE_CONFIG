@@ -22,6 +22,18 @@ The installer:
 
 ## Settings (`settings.json`)
 
+### Environment
+
+| Key | Value | Effect |
+|---|---|---|
+| `env.CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | `60` | Trigger auto-compaction at 60% context usage (default is higher) so long sessions stay responsive. |
+
+### Model
+
+| Key | Value | Effect |
+|---|---|---|
+| `model` | `opus` | Default model for new sessions (overridable per-session via `/model`). |
+
 ### Permissions
 
 Pre-approved Bash patterns — Claude can run these without asking each time.
@@ -53,9 +65,17 @@ Hooks fire on harness lifecycle events. This config wires three of them to a ter
 |---|---|
 | `statusLine.type` | `command` |
 | `statusLine.command` | `$HOME/.claude/statusline-command.sh` |
-| `statusLine.refreshInterval` | `30` (seconds) |
+| `statusLine.refreshInterval` | `1` (seconds) |
 
-`statusline-command.sh` is a Bash script that reads the harness JSON from stdin and renders a Powerline-style status bar showing the working directory, model + effort level (color-coded), context %, session/quota windows, and git branch. See `README.md.d/images/my-config.png` for the preview.
+`statusline-command.sh` is a Bash script that reads the harness JSON from stdin and renders a Powerline-style status bar showing:
+- working directory
+- model (short label: `Opus`, `Sonnet`, `Sonnet(1M)`, `Haiku`) + effort level, color-coded
+- context window % with formatted input/output token counts (`fmt_tokens` → `k`/`M`)
+- 5-hour session window % with absolute reset time
+- 7-day quota window % with absolute reset time (and weekday when >24h away)
+- git branch / detached-HEAD info, rebase/conflict state, ahead/behind
+
+See `README.md.d/images/my-config.png` for the preview.
 
 ### Other behavior flags
 
@@ -88,7 +108,7 @@ Runs `code .` via Bash. Inside VS Code's integrated terminal you can `claude --r
 
 ### `/commit`
 
-Stage explicit files and create a signed-style commit with a `Co-Authored-By: Claude` trailer.
+Stage explicit files and create a commit with a `Co-Authored-By: Claude` trailer.
 
 ```
 /commit
@@ -101,6 +121,21 @@ Stage explicit files and create a signed-style commit with a `Co-Authored-By: Cl
 - Body is a bullet list explicitly enumerating the changes, referencing files/symbols.
 - Always appends `Co-Authored-By: Claude <noreply@anthropic.com>`.
 - Refuses to invent a commit when there are no changes.
+
+---
+
+### `/commit-gpg`
+
+Same as `/commit`, but wraps `git commit -S` in an `xterm` so `pinentry-tty` can prompt for the GPG passphrase.
+
+```
+/commit-gpg
+```
+
+- `xterm -e bash -c '…'` gives `pinentry-tty` a real TTY for the passphrase prompt.
+- Inside the xterm: `GPG_TTY=$(tty) git -c gpg.program=gpg -c gpg.pinentry-mode=loopback commit -S …`.
+- After the xterm exits, runs `git log -1 --show-signature` to confirm the signature.
+- Requires `xterm` (`sudo apt install xterm`); refuses to fall back to an unsigned commit.
 
 ---
 

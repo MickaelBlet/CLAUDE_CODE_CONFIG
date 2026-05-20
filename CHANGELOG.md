@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `settings.json`: `model: "opus"` key.
 
 ### Changed
+- `README.md`: add `Environment` and `Model` sections (documenting `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=60` and `model: opus`); correct `statusLine.refreshInterval` from `30` to `1`; expand status-line description (short model labels, token counts, 5h/7d windows, git state); document new `/commit-gpg` skill; drop "signed-style" wording from `/commit` description.
 - `CLAUDE.md`: tighten "Response Style" and "Task Delegation" wording; drop the leading `@RTK.md` include; compress the model-selection table.
 - `settings.json`: reorder keys so `env` and `permissions` come first and `model` sits before `hooks`; set `statusLine.refreshInterval` back to `1`.
 - `statusline-command.sh`: shorten model labels via case (`Opus`, `Sonnet`, `Sonnet(1M)`, `Haiku`); replace `context_length` with `context` (adds token in/out segment); switch separator glyphs from `│`/`` to powerline ``/``; recolor week-usage segment (`bg_week=81`, `fg_week=232`); update `# echo "$input"` debug path to `~/.claude/.test-statusline.json`.
