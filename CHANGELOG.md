@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `statusline-command.sh`: `fmt_tokens` helper and new `context` function that appends formatted input/output token counts (`fmt_tokens`) next to the context-window percentage segment.
+- `settings.json`: `model: "opus"` key.
+
+### Changed
+- `CLAUDE.md`: tighten "Response Style" and "Task Delegation" wording; drop the leading `@RTK.md` include; compress the model-selection table.
+- `settings.json`: reorder keys so `env` and `permissions` come first and `model` sits before `hooks`; set `statusLine.refreshInterval` back to `1`.
+- `statusline-command.sh`: shorten model labels via case (`Opus`, `Sonnet`, `Sonnet(1M)`, `Haiku`); replace `context_length` with `context` (adds token in/out segment); switch separator glyphs from `│`/`` to powerline ``/``; recolor week-usage segment (`bg_week=81`, `fg_week=232`); update `# echo "$input"` debug path to `~/.claude/.test-statusline.json`.
+- `README.md.d/images/generate_images/my-config.html`: widen welcome/statusline frame to 80 columns; replace `body` `linear-gradient` background with solid `#181818`; refresh statusline preview to match new `statusline-command.sh` glyphs and the `Opus` short label with the token-count segment.
+- `README.md.d/images/my-config.png`: regenerate to match the updated HTML.
+
+### Removed
+- `statusline-command.sh`: drop the `session_usage` fallback that toggled `statusLine.refreshInterval` between 1 and 30 via `jq` to force a refresh when rate-limit info was missing.
+
+### Fixed
+- `.gitignore`: ignore `jobs/` and `daemon*` local artifacts.
+
 ## [0.1.12] - 2026-05-19
 
 ### Changed
@@ -134,3 +153,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - `statusline-command.sh`: drop redundant `rm -rf "$tmp"` calls in `session_usage`.
+
+[0.1.12]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.11...v0.1.12
+[0.1.11]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.10...v0.1.11
+[0.1.10]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.9...v0.1.10
+[0.1.9]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.8...v0.1.9
+[0.1.8]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.7...v0.1.8
+[0.1.7]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.6...v0.1.7
+[0.1.6]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.5...v0.1.6
+[0.1.5]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.4...v0.1.5
+[0.1.4]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.3...v0.1.4
+[0.1.3]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.2...v0.1.3
+[0.1.2]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/releases/tag/v0.1.0

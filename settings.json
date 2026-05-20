@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "60"
+  },
   "permissions": {
     "allow": [
       "Bash(rtk *)",
@@ -10,6 +13,7 @@
       "Bash(code *)"
     ]
   },
+  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -59,7 +63,7 @@
   "statusLine": {
     "type": "command",
     "command": "$HOME/.claude/statusline-command.sh",
-    "refreshInterval": 30
+    "refreshInterval": 1
   },
   "spinnerTipsEnabled": false,
   "syntaxHighlightingDisabled": true,
@@ -68,9 +72,5 @@
   "prefersReducedMotion": true,
   "shell": {
     "disable_aliases": true
-  },
-  "model": "opus",
-  "env": {
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "60"
   }
 }

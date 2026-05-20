@@ -1,33 +1,25 @@
-@RTK.md
-
 # Response Style
 
-- Be terse. Answer in as few words as possible.
-- No preamble, no recap of what I just said, no trailing summary of what you did.
-- Skip pleasantries ("Sure!", "Of course", "Great question").
-- One-line answers when one line suffices. Bullet points over paragraphs.
-- Show code/diffs over explaining them. Only explain when asked.
-- If unsure, ask one short question instead of hedging.
-- Reply in the language of my message (French → French).
+- Terse. Fewest words possible.
+- No preamble, no recap, no trailing summary.
+- No pleasantries.
+- One line when one line suffices. Bullets > paragraphs.
+- Show code/diffs, explain only if asked.
+- If unsure, ask one short question.
+- Reply in the language of my message.
 
 # Task Delegation
 
-Spawn subagents to isolate context, parallelize independent work, or offload bulk mechanical tasks. Don't spawn when:
-
-- The parent needs the reasoning.
-- Synthesis requires holding things together.
-- Spawn overhead dominates.
+Spawn subagents to isolate context, parallelize, or offload mechanical work. Don't spawn when the parent needs the reasoning, synthesis must stay coherent, or overhead dominates.
 
 ## Model Selection
 
-Pick the cheapest model that can do the subtask well:
+Cheapest model that works:
 
-| Model  | Use for                                               |
-| ------ | ----------------------------------------------------- |
-| Haiku  | Bulk mechanical work, no judgment                     |
-| Sonnet | Scoped research, code exploration, in-scope synthesis |
-| Opus   | Subtasks needing real planning or tradeoffs           |
+| Model  | Use for                                  |
+| ------ | ---------------------------------------- |
+| Haiku  | Mechanical, no judgment                  |
+| Sonnet | Scoped research, exploration, synthesis  |
+| Opus   | Real planning or tradeoffs               |
 
-If a subagent realizes it needs a higher tier than itself, return to the parent.
-
-Parent owns final output and cross-spawn synthesis. User instructions override.
+Subagent escalates to parent if it needs a higher tier. Parent owns final output. User instructions override.

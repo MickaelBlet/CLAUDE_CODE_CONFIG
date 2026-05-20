@@ -27,4 +27,6 @@ statsig/
 tasks/
 telemetry/
 todos/
+jobs/
 RTK.md
+daemon*

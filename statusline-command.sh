@@ -3,7 +3,7 @@
 # Read JSON input from stdin
 readonly input="$(cat)"
 
-# echo "$input" > ~/.test-statusline.json
+# echo "$input" > ~/.claude/.test-statusline.json
 
 function current_dir() {
     local cwd bg=238
@@ -40,9 +40,17 @@ function model() {
         *)       bg=240 ;;
     esac
 
-    local label="${model}"
+    local label
+    case "$model" in
+        Opus*)      label="Opus" ;;
+        Sonnet*1M*) label="Sonnet(1M)" ;;
+        Sonnet*)    label="Sonnet" ;;
+        Haiku*)     label="Haiku" ;;
+        *)          label="${model}" ;;
+    esac
+
     if [ -n "$effort" ] && [ "$effort" != "null" ]; then
-        label="${label} \033[38;5;${bg}m\033[48;5;${effort_bg}m"$'\uE0B0'"\033[38;5;${fg}m${effort_icon} ${effort^}\033[0m\033[38;5;${effort_bg}m"$'\uE0B4'
+        label="${label}\033[38;5;${bg}m\033[48;5;${effort_bg}m"$'\uE0B8'"\033[38;5;${fg}m${effort_icon} ${effort^}\033[0m\033[38;5;${effort_bg}m"$'\uE0B4'
     else
         label="${label}\033[0m\033[38;5;${bg}m"$'\uE0B4'
     fi
@@ -134,7 +142,7 @@ function git_info() {
 
     # Powerline characters (mirroring ~/.zshrc.d/promptor/functions/git config)
     local ch_branch=$'\uE0A0' ch_tag=$'\uF02B' ch_hash=$'\u2D4C'
-    local ch_sep=$'\u2502' ch_sep_prompt=$'\uE0B1'
+    local ch_sep=$'\u2502' ch_sep_prompt=$'\uE0B9'
     local ch_up_left=$'\u2B63' ch_up_right=$'\u2B61'
 
     # Build info string
@@ -153,19 +161,19 @@ function git_info() {
     fi
 
     if [ "$is_inside_git_dir" = true ]; then
-        [ -n "$info" ] && info="${info} ${ch_sep_prompt} "
+        [ -n "$info" ] && info="${info}${ch_sep_prompt}"
         if [ "$is_bare" = true ]; then info="${info}BARE"; else info="${info}.GIT"; fi
     fi
     if [ -n "$rebase_action" ]; then
-        [ -n "$info" ] && info="${info} ${ch_sep_prompt} "
+        [ -n "$info" ] && info="${info}${ch_sep_prompt}"
         info="${info}${rebase_action}"
     fi
     if [ "$conflict" = true ]; then
-        [ -n "$info" ] && info="${info} ${ch_sep_prompt} "
+        [ -n "$info" ] && info="${info}${ch_sep_prompt}"
         info="${info}CONFLICT"
     fi
     if [ -n "$branch" ]; then
-        [ -n "$info" ] && info="${info} ${ch_sep_prompt} "
+        [ -n "$info" ] && info="${info}${ch_sep_prompt}"
         info="${info}${branch}"
         if [ "$detached" = true ]; then
             if [ "$hashed" = true ]; then info="${info}${ch_hash}"; else info="${info}${ch_tag}"; fi
@@ -194,35 +202,59 @@ function git_info() {
         "$bg" "$bg" "$fg" "$info" "$bg"
 }
 
-function context_length() {
-    # Extract context window usage percentage
-    local used_pct bg=240 fg=231
-    used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty' 2>/dev/null)
-    if [[ -n "$used_pct" ]]; then
-        # Color based on usage: green <50, yellow 50-79, red >=80
-        if [[ "$used_pct" -ge 60 ]]; then
-            bg="124"
-        elif [[ "$used_pct" -ge 40 ]]; then
-            bg="130"
-        else
-            bg="22"
-        fi
-        echo -ne "\033[38;5;${bg}m"$'\uE0B6'"\033[48;5;${bg}m\033[38;5;231m"$'\U0001F4CA'" ${used_pct}%\033[0m\033[38;5;${bg}m"$'\uE0B4'"\033[0m"
+function fmt_tokens() {
+    local n=$1
+    [[ -z "$n" || ! "$n" =~ ^[0-9]+$ ]] && { echo "0"; return; }
+    if [[ "$n" -ge 1000000 ]]; then
+        printf "%d.%02dM" $((n/1000000)) $(((n%1000000)/10000))
+    elif [[ "$n" -ge 1000 ]]; then
+        printf "%d.%01dk" $((n/1000)) $(((n%1000)/100))
+    else
+        printf "%d" "$n"
     fi
 }
 
+function context() {
+    local used_pct tin tout bg=240 bg_in_out=231 fg=231 fg_in_out=232
+    used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty' 2>/dev/null)
+    tin=$(echo "$input" | jq -r '(.context_window.total_input_tokens // empty)? // empty' 2>/dev/null)
+    tout=$(echo "$input" | jq -r '(.context_window.total_output_tokens // empty)? // empty' 2>/dev/null)
+
+    [[ -z "$used_pct" || "$used_pct" == "null" ]] && return
+
+    if [[ "$used_pct" -ge 60 ]]; then
+        bg="124"
+    elif [[ "$used_pct" -ge 40 ]]; then
+        bg="130"
+    else
+        bg="22"
+    fi
+
+    local out="\033[38;5;${bg}m"$'\uE0B6'"\033[48;5;${bg}m\033[38;5;${fg}m"$'\U0001F4CA'" ${used_pct}%"
+
+    [[ -z "$tin" || "$tin" == "null" ]] && tin=0
+    [[ -z "$tout" || "$tout" == "null" ]] && tout=0
+
+    if [[ "$tin" -gt 0 || "$tout" -gt 0 ]]; then
+        local tin_fmt tout_fmt
+        tin_fmt=$(fmt_tokens "$tin")
+        tout_fmt=$(fmt_tokens "$tout")
+        out+="\033[38;5;${bg}m\033[48;5;${bg_in_out}m"$'\uE0B8'"\033[38;5;${fg_in_out}m"$'\uF176'"${tout_fmt}"
+        out+="\033[38;5;${fg_in_out}m"$'\uE0B9'"\033[38;5;${fg_in_out}m"$'\uF175'"${tin_fmt}"
+        out+="\033[0m\033[38;5;${bg_in_out}m"$'\uE0B4'"\033[0m"
+    else
+        out+="\033[0m\033[38;5;${bg}m"$'\uE0B4'"\033[0m"
+    fi
+
+    echo -ne "$out"
+}
+
 function session_usage() {
-    local pct week timestamp_pct timestamp_pct_full timestamp timestamp_m timestamp_week timestamp_week_full fg=231 bg_pct bg_week=33 tmp
+    local pct week timestamp_pct timestamp_pct_full timestamp timestamp_m timestamp_week timestamp_week_full fg=231 bg_pct fg_week=232 bg_week=81 tmp
     pct=$(echo "$input" | jq -r '(.rate_limits.five_hour.used_percentage // empty)? // empty' 2>/dev/null)
     week=$(echo "$input" | jq -r '(.rate_limits.seven_day.used_percentage // empty)? // empty' 2>/dev/null)
 
     if [[ -z "$pct" || "$pct" == "null" ]] && [[ -z "$week" || "$week" == "null" ]]; then
-        # Force refresh by toggling refreshInterval in settings.json if no rate limit info is available
-        tmp=$(mktemp)
-        jq '.statusLine.refreshInterval = 1' "$HOME/.claude/settings.json" > "$tmp" && mv "$tmp" "$HOME/.claude/settings.json"
-        sleep 1.1
-        tmp=$(mktemp)
-        jq '.statusLine.refreshInterval = 30' "$HOME/.claude/settings.json" > "$tmp" && mv "$tmp" "$HOME/.claude/settings.json"
         return
     fi
 
@@ -254,7 +286,7 @@ function session_usage() {
             timestamp_pct=$(echo "${timestamp_pct}/60" | bc)
             timestamp_pct="${timestamp_pct}h$(printf "%02d" "${timestamp_m}")"
         fi
-        timestamp_pct="${timestamp_pct}\033[38;5;232m"$'\u2502'"\033[38;5;${fg}m$(date -d "@${timestamp_pct_full}" +"%Hh%M" 2>/dev/null)"
+        timestamp_pct="${timestamp_pct}\033[38;5;231m"$'\uE0B9'"\033[38;5;${fg}m$(date -d "@${timestamp_pct_full}" +"%Hh%M" 2>/dev/null)"
     fi
 
     timestamp_week_full=$timestamp_week
@@ -268,17 +300,17 @@ function session_usage() {
         timestamp_week=$(echo "${timestamp_week}/60" | bc)
         if [[ "${timestamp_week}" -lt 100 ]]; then
             timestamp_week="${timestamp_week}m"
-            timestamp_week+="\033[38;5;232m"$'\u2502'"\033[38;5;${fg}m$(date -d "@${timestamp_week_full}" +"%Hh%M" 2>/dev/null)"
+            timestamp_week+="\033[38;5;232m"$'\uE0B9'"\033[38;5;${fg_week}m$(date -d "@${timestamp_week_full}" +"%Hh%M" 2>/dev/null)"
         else
             timestamp_m="${timestamp_week}"
             timestamp_week=$(echo "${timestamp_week}/60" | bc)
             if [[ "${timestamp_week}" -lt 24 ]]; then
                 timestamp_m=$(echo "${timestamp_m}%60" | bc)
                 timestamp_week="${timestamp_week}h$(printf "%02d" "${timestamp_m}")"
-                timestamp_week+="\033[38;5;232m"$'\u2502'"\033[38;5;${fg}m$(date -d "@${timestamp_week_full}" +"%Hh%M" 2>/dev/null)"
+                timestamp_week+="\033[38;5;232m"$'\uE0B9'"\033[38;5;${fg_week}m$(date -d "@${timestamp_week_full}" +"%Hh%M" 2>/dev/null)"
             else
                 timestamp_week="$(echo "${timestamp_week}/24" | bc)d"
-                timestamp_week+="\033[38;5;232m"$'\u2502'"\033[38;5;${fg}m$(date -d "@${timestamp_week_full}" +"%A %Hh%M" 2>/dev/null)"
+                timestamp_week+="\033[38;5;232m"$'\uE0B9'"\033[38;5;${fg_week}m$(date -d "@${timestamp_week_full}" +"%A %Hh%M" 2>/dev/null)"
             fi
         fi
     fi
@@ -296,18 +328,18 @@ function session_usage() {
             bg_pct="22"
         fi
         out="\033[38;5;${bg_pct}m"$'\uE0B6'"\033[48;5;${bg_pct}m\033[38;5;${fg}m"$'\u23F3'" "
-        out+="${pct}%\033[38;5;232m"$'\u2502'"\033[38;5;${fg}m${timestamp_pct}"
+        out+="${pct}%\033[38;5;231m"$'\uE0B9'"\033[38;5;${fg}m${timestamp_pct}"
     fi
 
     if [[ -n "$week" ]]; then
         week=${week%.*}
         [[ -z "$week" || ! "$week" =~ ^[0-9]+$ ]] && week=0
         if [[ -n "$pct" ]]; then
-            out+=" \033[38;5;${bg_pct}m\033[48;5;${bg_week}m"$'\uE0B0'" \033[38;5;${fg}m"
+            out+="\033[38;5;${bg_pct}m\033[48;5;${bg_week}m"$'\uE0B8'"\033[38;5;${fg_week}m"
         else
-            out="\033[38;5;${bg_week}m"$'\uE0B6'"\033[48;5;${bg_week}m\033[38;5;${fg}m"$'\u23F3'" "
+            out="\033[38;5;${bg_week}m"$'\uE0B6'"\033[48;5;${bg_week}m\033[38;5;${fg_week}m"$'\u23F3'" "
         fi
-        out+="${week}%\033[38;5;232m"$'\u2502'"\033[38;5;${fg}m${timestamp_week}\033[0m\033[38;5;${bg_week}m"$'\uE0B4'
+        out+="${week}%\033[38;5;232m"$'\uE0B9'"\033[38;5;${fg_week}m${timestamp_week}\033[0m\033[38;5;${bg_week}m"$'\uE0B4'
     else
         if [[ -n "$pct" ]]; then
             out+="\033[0m\033[38;5;${bg_pct}m"$'\uE0B4'
@@ -318,7 +350,7 @@ function session_usage() {
 }
 
 printf '%b' "$(model)"
-printf '%b' "$(context_length)"
+printf '%b' "$(context)"
 printf '%b' "$(session_usage)"
 printf '%b' "\n"
 printf '%b' "$(current_dir)"
