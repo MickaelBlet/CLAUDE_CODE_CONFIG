@@ -13,7 +13,7 @@
       "Bash(code *)"
     ]
   },
-  "model": "opus",
+  "model": "sonnet",
   "hooks": {
     "Notification": [
       {
@@ -37,17 +37,6 @@
         ]
       }
     ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "[ -w /dev/tty ] && printf '\\a' > /dev/tty || true"
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -58,16 +47,27 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -w /dev/tty ] && printf '\\a' > /dev/tty || true"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
     "type": "command",
     "command": "$HOME/.claude/statusline-command.sh",
-    "refreshInterval": 1
+    "refreshInterval": 30
   },
   "spinnerTipsEnabled": false,
   "syntaxHighlightingDisabled": true,
-  "effortLevel": "low",
+  "effortLevel": "medium",
   "awaySummaryEnabled": false,
   "prefersReducedMotion": true,
   "shell": {

@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- `statusline-command.sh`: replace ~10 individual `jq` subprocess calls with a single `mapfile + jq` parse into global variables at startup; parallelize Round 1 `git rev-parse` calls in `git_info` (previously serial subshell calls); replace all `bc` arithmetic in `session_usage` with bash `$(())`.
+- `statusline-command.sh`: fix time-display threshold from `100` to `60` for seconds/minutes/hours boundaries in `session_usage`.
+- `settings.json`: change `model` from `"opus"` to `"sonnet"` and `effortLevel` from `"low"` to `"medium"`.
+- `settings.json`: change `statusLine.refreshInterval` from `1` to `30`.
+- `settings.json`: swap hook order — `PreToolUse` (Bash → `rtk hook claude`) now before `Stop` (bell notification).
+
 ## [0.1.13] - 2026-05-20
 
 ### Added
