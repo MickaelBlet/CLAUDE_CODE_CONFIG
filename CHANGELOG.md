@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.14] - 2026-05-25
 
 ### Changed
 - `statusline-command.sh`: replace ~10 individual `jq` subprocess calls with a single `mapfile + jq` parse into global variables at startup; parallelize Round 1 `git rev-parse` calls in `git_info` (previously serial subshell calls); replace all `bc` arithmetic in `session_usage` with bash `$(())`.
@@ -164,6 +164,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - `statusline-command.sh`: drop redundant `rm -rf "$tmp"` calls in `session_usage`.
 
+[0.1.14]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.13...v0.1.14
 [0.1.13]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.12...v0.1.13
 [0.1.12]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.11...v0.1.12
 [0.1.11]: https://github.com/MickaelBlet/CLAUDE_CODE_CONFIG/compare/v0.1.10...v0.1.11
