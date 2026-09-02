@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `statusline-command.sh`: `clock` function rendering a `🕑 HH:MM` powerline segment, appended at the end of the second line (after `git_info`).
+- `statusline-command.sh`: `Fable*` cases in `model` (background color `54`, label `Fable`).
+- `settings.json`: `tui: "fullscreen"`, `skipDangerousModePermissionPrompt`, `agentPushNotifEnabled`, `defaultMode: "acceptEdits"`.
+
+### Changed
+- `settings.json`: change `model` from `"sonnet"` to `"opus"` and `effortLevel` from `"medium"` to `"high"`.
+- `settings.json`: `Notification`, `PermissionRequest` and `Stop` hooks now emit an OSC 9 desktop notification (`\e]9;<name>\a`) instead of a plain bell.
+- `settings.json`: rename `shell.disable_aliases` to `shell.disableAliases`.
+
 ## [0.1.14] - 2026-05-25
 
 ### Changed

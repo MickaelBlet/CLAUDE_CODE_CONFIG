@@ -13,7 +13,7 @@
       "Bash(code *)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -21,7 +21,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -w /dev/tty ] && printf '\\a' > /dev/tty || true"
+            "command": "[ -w /dev/tty ] && printf '\\e]9;Notification\\a' > /dev/tty || true"
           }
         ]
       }
@@ -32,7 +32,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -w /dev/tty ] && printf '\\a' > /dev/tty || true"
+            "command": "[ -w /dev/tty ] && printf '\\e]9;PermissionRequest\\a' > /dev/tty || true"
           }
         ]
       }
@@ -54,7 +54,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -w /dev/tty ] && printf '\\a' > /dev/tty || true"
+            "command": "[ -w /dev/tty ] && printf '\\e]9;Stop\\a' > /dev/tty || true"
           }
         ]
       }
@@ -67,10 +67,14 @@
   },
   "spinnerTipsEnabled": false,
   "syntaxHighlightingDisabled": true,
-  "effortLevel": "medium",
+  "effortLevel": "high",
   "awaySummaryEnabled": false,
+  "tui": "fullscreen",
   "prefersReducedMotion": true,
+  "skipDangerousModePermissionPrompt": true,
+  "agentPushNotifEnabled": true,
+  "defaultMode": "acceptEdits",
   "shell": {
-    "disable_aliases": true
+    "disableAliases": true
   }
 }

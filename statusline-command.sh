@@ -52,6 +52,7 @@ function model() {
     esac
 
     case "$model" in
+        Fable*)  bg=54  ;;
         Opus*)   bg=125 ;;
         Sonnet*) bg=33  ;;
         Haiku*)  bg=22  ;;
@@ -60,6 +61,7 @@ function model() {
 
     local label
     case "$model" in
+        Fable*)     label="Fable" ;;
         Opus*)      label="Opus" ;;
         Sonnet*1M*) label="Sonnet(1M)" ;;
         Sonnet*)    label="Sonnet" ;;
@@ -241,6 +243,12 @@ function git_info() {
         "$bg" "$bg" "$fg" "$info" "$bg"
 }
 
+function clock() {
+    local bg=238 fg=231
+    printf "\033[38;5;%sm"$''"\033[48;5;%sm\033[38;5;%sm"$'\U0001F551'" %s\033[0m\033[38;5;%sm"$''"\033[0m" \
+        "$bg" "$bg" "$fg" "$(date +%H:%M)" "$bg"
+}
+
 function fmt_tokens() {
     local n=$1
     [[ -z "$n" || ! "$n" =~ ^[0-9]+$ ]] && { echo "0"; return; }
@@ -388,3 +396,4 @@ printf '%b' "$(session_usage)"
 printf '%b' "\n"
 printf '%b' "$(current_dir)"
 printf '%b' "$(git_info)"
+printf '%b' "$(clock)"
